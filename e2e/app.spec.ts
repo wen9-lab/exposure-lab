@@ -48,3 +48,17 @@ test('参数变化自动记录本地计算历史', async ({ page }) => {
   await page.getByRole('button', { name: /设置与预设/ }).click()
   await expect(page.getByRole('heading', { name: '计算历史 1' })).toBeVisible()
 })
+
+test('默认基准可自定义，胶片阳光 16 沿用胶卷 ISO', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: '光圈前一档' }).click()
+  await page.getByRole('button', { name: /设置与预设/ }).click()
+  await page.getByRole('button', { name: '设为当前组合' }).first().click()
+  await page.getByRole('button', { name: /完整档计算器/ }).click()
+  await page.getByRole('button', { name: '恢复默认基准' }).click()
+  await expect(page.locator('.comparison').getByText('f/2.8').first()).toBeVisible()
+  await page.getByRole('button', { name: '胶片相机' }).click()
+  await page.getByLabel('胶卷 ISO').fill('200')
+  await page.getByRole('button', { name: /应用为基准/ }).click()
+  await expect(page.locator('.comparison').getByText('ISO 200').first()).toBeVisible()
+})

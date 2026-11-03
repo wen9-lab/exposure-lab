@@ -29,6 +29,7 @@ export interface AppData {
   theme: 'dark' | 'light'
   defaultMode: 'full' | 'third'
   defaultCamera: Camera
+  defaultBases: Record<'full' | 'third', ExposureSetting>
   shutterFormat: 'fraction' | 'decimal'
   showExtended: boolean
   ranges: Partial<Record<Parameter, [number, number]>>
@@ -42,7 +43,7 @@ function newCalculator(mode: 'full' | 'third'): CalculatorData {
   const base = makeSetting(4, 1 / 500, 100, mode)
   return {
     base,
-    current: base,
+    current: makeSetting(4, 1 / 500, 100, mode),
     camera: 'digital',
     targetEV: 0,
     preferred: 'none',
@@ -58,6 +59,10 @@ export function defaultData(): AppData {
     theme: 'dark',
     defaultMode: 'full',
     defaultCamera: 'digital',
+    defaultBases: {
+      full: makeSetting(4, 1 / 500, 100, 'full'),
+      third: makeSetting(4, 1 / 500, 100, 'third'),
+    },
     shutterFormat: 'fraction',
     showExtended: true,
     ranges: {},
@@ -79,8 +84,15 @@ function validSetting(raw: unknown, mode: 'full' | 'third'): ExposureSetting {
 }
 export function parseBackup(raw: string): AppData {
   const value = JSON.parse(raw) as Partial<AppData>
-  if (value.version !== 1 || !value.full || !value.third) throw new Error('不支持的备份格式或版本')
+  if (!value || value.version !== 1 || !value.full || !value.third)
+    throw new Error('不支持的备份格式或版本')
   const data = { ...defaultData(), ...value }
+  if (!data.defaultBases || typeof data.defaultBases !== 'object')
+    throw new Error('备份中的默认基准无效')
+  data.defaultBases = {
+    full: validSetting(data.defaultBases.full, 'full'),
+    third: validSetting(data.defaultBases.third, 'third'),
+  }
   for (const mode of ['full', 'third'] as const) {
     const calc = data[mode]
     const base = validSetting(calc.base, mode)
@@ -88,8 +100,11 @@ export function parseBackup(raw: string): AppData {
     if (
       !['digital', 'film'].includes(calc.camera) ||
       !Number.isFinite(calc.targetEV) ||
+      !Number.isFinite(calc.filmISO) ||
+      calc.filmISO <= 0 ||
       !Number.isFinite(calc.ei) ||
-      calc.ei <= 0
+      calc.ei <= 0 ||
+      !['none', 'aperture', 'shutter', 'iso'].includes(calc.preferred)
     )
       throw new Error('备份中的计算器设置无效')
     data[mode] = {
@@ -104,6 +119,8 @@ export function parseBackup(raw: string): AppData {
         : [],
     }
   }
+  if (!data.ranges || typeof data.ranges !== 'object' || Array.isArray(data.ranges))
+    throw new Error('备份中的设备范围无效')
   for (const range of Object.values(data.ranges))
     if (
       range &&

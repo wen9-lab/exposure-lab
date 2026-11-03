@@ -22,9 +22,11 @@ npm run dev
 npm run build
 npm run build:pages
 npm run test:e2e
+npm run test:offline
 ```
 
 `npm run build:pages` 生成 GitHub Pages 路径 `/exposure-lab/` 下的静态网页。网页首次打开需要 HTTPS；服务工作线程缓存完成后可断网使用。清除浏览器网站数据会删除缓存和本地预设，请先导出 JSON。
+`npm run test:offline` 会先重新构建 Pages 版本，再测试首次缓存后的断网重开。
 
 ## Windows 安装
 

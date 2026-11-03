@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   evaluate,
-  makeSetting,
   makeValue,
   moveAndCompensate,
   rangeWarnings,
@@ -68,6 +67,7 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
   const [sunISO, setSunISO] = useState(400)
   const [sunStyle, setSunStyle] = useState<'exact' | 'standard'>('standard')
   const [manual, setManual] = useState<Parameter | null>(null)
+  const activeSunISO = calc.camera === 'film' ? calc.filmISO : sunISO
   const target = calc.targetEV - (calc.camera === 'film' ? Math.log2(calc.ei / calc.filmISO) : 0)
   const result = useMemo(
     () => evaluate(calc.base, calc.current, target, false, mode),
@@ -122,7 +122,11 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
     change(parameter, next.value)
   }
   const setBaseline = (setting: ExposureSetting) =>
-    update((c) => ({ ...c, base: setting, current: setting, warnings: [] }))
+    update((c) => {
+      const applied =
+        c.camera === 'film' ? { ...setting, iso: makeValue('iso', c.filmISO, mode) } : setting
+      return { ...c, base: applied, current: applied, warnings: [] }
+    })
   const notes = [
     result.lightEV > 0.05
       ? '理论进光量增加'
@@ -375,15 +379,7 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
             </div>
             <div className="action-row">
               <button onClick={() => setBaseline(calc.current)}>设当前为基准</button>
-              <button
-                onClick={() =>
-                  setBaseline(
-                    makeSetting(4, 1 / 500, calc.camera === 'film' ? calc.filmISO : 100, mode),
-                  )
-                }
-              >
-                恢复默认基准
-              </button>
+              <button onClick={() => setBaseline(data.defaultBases[mode])}>恢复默认基准</button>
               <button onClick={() => update((c) => ({ ...c, current: c.base, warnings: [] }))}>
                 重置当前
               </button>
@@ -415,7 +411,8 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
                 <input
                   type="number"
                   min="1"
-                  value={sunISO}
+                  value={activeSunISO}
+                  disabled={calc.camera === 'film'}
                   onChange={(e) => setSunISO(Math.max(1, Number(e.target.value) || 1))}
                 />
               </label>
@@ -434,16 +431,17 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
               <div>
                 <span>理论基准</span>
                 <strong>
-                  f/{sunScenes[scene].aperture} · {shutterText(1 / sunISO)} · ISO {sunISO}
+                  f/{sunScenes[scene].aperture} · {shutterText(1 / activeSunISO)} · ISO{' '}
+                  {activeSunISO}
                 </strong>
               </div>
               <div>
                 <span>应用组合</span>
-                <strong>{combo(sunny16(scene, sunISO, mode, sunStyle))}</strong>
+                <strong>{combo(sunny16(scene, activeSunISO, mode, sunStyle))}</strong>
               </div>
               <button
                 className="primary"
-                onClick={() => setBaseline(sunny16(scene, sunISO, mode, sunStyle))}
+                onClick={() => setBaseline(sunny16(scene, activeSunISO, mode, sunStyle))}
               >
                 应用为基准 →
               </button>
@@ -452,7 +450,9 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
               <p className="micro">
                 标准快门取整差异：
                 {formatNumber(
-                  Math.log2(sunny16(scene, sunISO, mode, 'standard').shutter.value * sunISO),
+                  Math.log2(
+                    sunny16(scene, activeSunISO, mode, 'standard').shutter.value * activeSunISO,
+                  ),
                   2,
                 )}{' '}
                 EV。晴天 ISO 400 在 1/3 档可选 1/400 秒。
@@ -897,12 +897,20 @@ function Settings({ data, setData, notify }: SettingsProps) {
                     camera,
                     filmISO: d.full.current.iso.value,
                     ei: d.full.current.iso.value,
+                    preferred:
+                      camera === 'film' && d.full.preferred === 'iso'
+                        ? 'shutter'
+                        : d.full.preferred,
                   },
                   third: {
                     ...d.third,
                     camera,
                     filmISO: d.third.current.iso.value,
                     ei: d.third.current.iso.value,
+                    preferred:
+                      camera === 'film' && d.third.preferred === 'iso'
+                        ? 'shutter'
+                        : d.third.preferred,
                   },
                 }))
               }}
@@ -911,6 +919,24 @@ function Settings({ data, setData, notify }: SettingsProps) {
               <option value="film">胶片相机</option>
             </select>
           </div>
+          {(['full', 'third'] as Mode[]).map((mode) => (
+            <div className="settings-row" key={mode}>
+              <div>
+                <strong>{mode === 'full' ? '完整档默认基准' : '1/3 档默认基准'}</strong>
+                <small>{combo(data.defaultBases[mode])}</small>
+              </div>
+              <button
+                onClick={() =>
+                  setData((d) => ({
+                    ...d,
+                    defaultBases: { ...d.defaultBases, [mode]: d[mode].current },
+                  }))
+                }
+              >
+                设为当前组合
+              </button>
+            </div>
+          ))}
           <div className="settings-row">
             <div>
               <strong>快门显示</strong>
