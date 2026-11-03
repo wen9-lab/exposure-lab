@@ -23,10 +23,12 @@ npm run build
 npm run build:pages
 npm run test:e2e
 npm run test:offline
+npm run test:live
 ```
 
 `npm run build:pages` 生成 GitHub Pages 路径 `/exposure-lab/` 下的静态网页。网页首次打开需要 HTTPS；服务工作线程缓存完成后可断网使用。清除浏览器网站数据会删除缓存和本地预设，请先导出 JSON。
 `npm run test:offline` 会先重新构建 Pages 版本，再测试首次缓存后的断网重开。
+`npm run test:live` 对已发布的 HTTPS 网页执行相同的断网重开测试，需要联网完成首次加载。
 
 ## Windows 安装
 
@@ -44,7 +46,7 @@ Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装
 .\scripts\build-android.ps1
 ```
 
-脚本初始化 Android 工程并构建 ARM64 APK，复制到 `output/android/`。个人测试可使用调试签名安装；长期使用或升级时应保管同一签名密钥。Android 真机首次安装可能需在系统设置中允许从该来源安装应用。
+脚本初始化 Android 工程并构建带调试签名的 ARM64 APK，复制到 `output/android/`。它适合个人测试；正式长期分发或升级应配置并保管专用签名密钥。Android 真机首次安装可能需在系统设置中允许从该来源安装应用。
 
 ## 计算口径与限制
 

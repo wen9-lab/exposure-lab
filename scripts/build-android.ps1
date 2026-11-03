@@ -11,11 +11,13 @@ $sdk = Join-Path $ToolchainRoot 'AndroidSDK'
 if (Test-Path $sdk) { $env:ANDROID_HOME = $sdk; $env:ANDROID_SDK_ROOT = $sdk }
 $jbr = Join-Path $ToolchainRoot 'AndroidStudio\jbr'
 if (Test-Path $jbr) { $env:JAVA_HOME = $jbr }
+$jdk = Join-Path $ToolchainRoot 'JDK17'
+if (-not $env:JAVA_HOME -and (Test-Path (Join-Path $jdk 'bin\java.exe'))) { $env:JAVA_HOME = $jdk }
 if (-not (Test-Path 'src-tauri\gen\android')) {
   npm run tauri -- android init --ci
   if ($LASTEXITCODE -ne 0) { throw 'Android 初始化失败' }
 }
-npm run tauri -- android build --apk --target aarch64
+npm run tauri -- android build --apk --target aarch64 --debug
 if ($LASTEXITCODE -ne 0) { throw 'Android 构建失败' }
 $destination = Join-Path (Get-Location) 'output\android'
 New-Item -ItemType Directory -Path $destination -Force | Out-Null
