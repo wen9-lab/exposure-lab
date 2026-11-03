@@ -1,0 +1,35 @@
+{
+  "name": "exposure-lab",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build:pages": "tsc -b && vite build --mode pages",
+    "preview:pages": "vite preview --mode pages --host 127.0.0.1 --port 4173",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:offline": "playwright test -c playwright.offline.config.ts",
+    "build:windows": "tauri build --bundles nsis",
+    "build:android": "tauri android build --apk",
+    "tauri": "tauri"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@tauri-apps/api": "^2.12.4",
+    "@tauri-apps/cli": "^2.12.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.2.1",
+    "prettier": "^3.9.10",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vite-plugin-pwa": "^2.0.0",
+    "vitest": "^5.1.0"
+  }
+}

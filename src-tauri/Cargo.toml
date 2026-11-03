@@ -1,0 +1,24 @@
+[package]
+name = "exposure-lab"
+version = "0.1.0"
+description = "离线摄影曝光教学与计算"
+authors = ["wen9-lab"]
+repository = "https://github.com/wen9-lab/exposure-lab"
+edition = "2024"
+rust-version = "1.90"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "exposure_lab_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2.7.4", features = [] }
+
+[dependencies]
+serde_json = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+log = "0.4"
+tauri = { version = "2.12.5", features = [] }
+tauri-plugin-log = "2"
