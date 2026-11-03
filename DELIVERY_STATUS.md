@@ -9,7 +9,7 @@
 - Mac/iPhone 可用的 HTTPS 网页：<https://wen9-lab.github.io/exposure-lab/>。GitHub Pages 部署成功；Windows Edge 上的线上首次缓存、断网刷新与本地状态保留测试通过。
 - 最近一次测试：计算单元测试 15/15、浏览器交互 5/5、本地和线上网页离线测试各 1/1；Windows 和 Android 前端构建成功。
 - Android SDK、JDK、Gradle、Rust、NDK 与构建缓存位于 `E:\ExposureLab-Toolchains`。用户已同意 Android SDK 许可，所需许可已接受。Android 模块使用 `compileSdk 36`、`targetSdk 35`。
-- 本任务产生的 C 盘 `node_modules`、旧安装包、临时截图、Android SDK 缓存已清除；误装在 C 盘的 Microsoft OpenJDK 17 已通过正式卸载程序移除，ADB 密钥已校验后迁到 E 盘。C 盘保留小体积源码工作区，便于继续编辑。
+- 本任务产生的 C 盘 `node_modules`、旧安装包、临时截图、Android SDK 缓存已清除；误装在 C 盘的 Microsoft OpenJDK 17 已通过正式卸载程序移除，ADB 密钥已校验后迁到 E 盘。C 盘重复源码副本已删除，后续编辑以 E 盘主工程为准。
 
 ## 尚待真实设备验收
 
