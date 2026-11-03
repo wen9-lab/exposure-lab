@@ -9,6 +9,15 @@ if (Test-Path (Join-Path $cargoBin 'cargo.exe')) {
 }
 $sdk = Join-Path $ToolchainRoot 'AndroidSDK'
 if (Test-Path $sdk) { $env:ANDROID_HOME = $sdk; $env:ANDROID_SDK_ROOT = $sdk }
+$ndkRoot = Join-Path $sdk 'ndk'
+if (Test-Path $ndkRoot) {
+  $ndk = Get-ChildItem -LiteralPath $ndkRoot -Directory | Sort-Object Name -Descending | Select-Object -First 1
+  if ($ndk) { $env:NDK_HOME = $ndk.FullName; $env:ANDROID_NDK_HOME = $ndk.FullName }
+}
+$env:GRADLE_USER_HOME = Join-Path $ToolchainRoot 'gradle'
+$env:TEMP = Join-Path $ToolchainRoot 'temp'
+$env:TMP = $env:TEMP
+New-Item -ItemType Directory -Path $env:GRADLE_USER_HOME, $env:TEMP -Force | Out-Null
 $jbr = Join-Path $ToolchainRoot 'AndroidStudio\jbr'
 if (Test-Path $jbr) { $env:JAVA_HOME = $jbr }
 $jdk = Join-Path $ToolchainRoot 'JDK17'
