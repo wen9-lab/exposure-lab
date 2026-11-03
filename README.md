@@ -16,7 +16,7 @@
 需要 Node.js 24、npm，以及 Windows 安装包所需的 Rust MSVC 工具链和 Microsoft C++ Build Tools。Android 构建还需要 Android SDK、JDK 和 Rust Android 目标。各平台的具体先决条件以 [Tauri 官方说明](https://v2.tauri.app/start/prerequisites/) 为准。
 
 ```powershell
-npm ci --cache E:\CodexCache\npm
+npm ci --cache E:\ExposureLab-Toolchains\npm-cache
 npm test
 npm run dev
 npm run build
@@ -47,6 +47,7 @@ Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装
 ```
 
 脚本初始化 Android 工程并构建带调试签名的 ARM64 APK，复制到 `output/android/`。它适合个人测试；正式长期分发或升级应配置并保管专用签名密钥。Android 真机首次安装可能需在系统设置中允许从该来源安装应用。
+脚本默认从 E 盘读取 Android SDK，并把 Gradle、Rust 构建产物及 Android 用户目录放在 E 盘；应用使用 `compileSdk 36`、`targetSdk 35`、`minSdk 24`。Windows 若提示无法创建符号链接，请在管理员 PowerShell 中执行构建脚本，或按系统说明启用开发者模式。生成的调试版包名带 `.debug` 后缀。
 
 ## 计算口径与限制
 
