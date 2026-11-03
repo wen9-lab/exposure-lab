@@ -23,7 +23,7 @@ if (Test-Path $jbr) { $env:JAVA_HOME = $jbr }
 $jdk = Join-Path $ToolchainRoot 'JDK17'
 if (-not $env:JAVA_HOME -and (Test-Path (Join-Path $jdk 'bin\java.exe'))) { $env:JAVA_HOME = $jdk }
 if (-not (Test-Path 'src-tauri\gen\android')) {
-  npm run tauri -- android init --ci
+  npm run tauri -- android init --ci --skip-targets-install
   if ($LASTEXITCODE -ne 0) { throw 'Android 初始化失败' }
 }
 npm run tauri -- android build --apk --target aarch64 --debug
