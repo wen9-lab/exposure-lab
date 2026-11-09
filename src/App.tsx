@@ -35,6 +35,10 @@ const nav: { id: Page; icon: string; label: string; sub: string }[] = [
 function formatNumber(n: number, digits = 2) {
   return `${n >= 0 ? '+' : ''}${n.toFixed(digits)}`
 }
+function formatCompensation(ev: number) {
+  const rounded = Number(ev.toFixed(1))
+  return (rounded > 0 ? '+' : '') + rounded
+}
 function shutterText(seconds: number, decimal = false): string {
   if (decimal) return `${seconds.toFixed(seconds < 0.01 ? 5 : 3)} 秒`
   if (seconds >= 1) return `${seconds} 秒`
@@ -74,9 +78,16 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
     () => evaluate(calc.base, calc.current, target, false, mode),
     [calc, target, mode],
   )
+  const targetTick = Math.max(-15, Math.min(15, Math.round(calc.targetEV * 3)))
+  const setTargetTick = (tick: number) =>
+    update((c) => ({
+      ...c,
+      targetEV: Math.max(-15, Math.min(15, tick)) / 3,
+      warnings: [],
+    }))
   const hardwareWarnings = rangeWarnings(calc.current, data.ranges)
   const shownStatus =
-    hardwareWarnings.length || (Math.abs(result.residualEV) > 1e-8 && calc.preferred !== 'none')
+    hardwareWarnings.length || (Math.abs(result.residualEV) > 1e-8 && calc.warnings.length > 0)
       ? 'limited'
       : result.status
   const statusLabel = {
@@ -366,17 +377,42 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
                   {calc.camera === 'digital' && <option value="iso">优先 ISO</option>}
                 </select>
               </label>
-              <label>
-                曝光目标 <span>{formatNumber(calc.targetEV, mode === 'third' ? 2 : 0)} EV</span>
-                <input
-                  type="range"
-                  min="-5"
-                  max="5"
-                  step={mode === 'third' ? 1 / 3 : 1}
-                  value={calc.targetEV}
-                  onChange={(e) => update((c) => ({ ...c, targetEV: Number(e.target.value) }))}
-                />
-              </label>
+              <div className="target-setting">
+                <div className="target-heading">
+                  <label htmlFor={'exposure-target-' + mode}>曝光目标</label>
+                  <output htmlFor={'exposure-target-' + mode}>{formatCompensation(calc.targetEV)} EV</output>
+                </div>
+                <div className="target-controls">
+                  <button
+                    type="button"
+                    aria-label="曝光目标减少 1/3 EV"
+                    disabled={targetTick <= -15}
+                    onClick={() => setTargetTick(targetTick - 1)}
+                  >−⅓</button>
+                  <input
+                    id={'exposure-target-' + mode}
+                    type="range"
+                    min="-15"
+                    max="15"
+                    step="1"
+                    value={targetTick}
+                    aria-valuetext={formatCompensation(calc.targetEV) + ' EV'}
+                    onChange={(e) => setTargetTick(Number(e.target.value))}
+                  />
+                  <button
+                    type="button"
+                    aria-label="曝光目标增加 1/3 EV"
+                    disabled={targetTick >= 15}
+                    onClick={() => setTargetTick(targetTick + 1)}
+                  >+⅓</button>
+                </div>
+                <small className="target-help">
+                  {mode === 'full'
+                    ? '目标每次 1/3 EV；光圈、快门、ISO 仍按完整 1 档调整，达不到时看剩余偏差。'
+                    : '目标和参数均支持 1/3 档调整。'}
+                  0.3 与 0.7 为显示近似值，内部按精确 1/3 与 2/3 EV 计算。
+                </small>
+              </div>
             </div>
             <div className="action-row">
               <button onClick={() => setBaseline(calc.current)}>设当前为基准</button>
@@ -652,16 +688,13 @@ function Reference() {
           </table>
         </div>
         <div className="comp-scale">
-          <h3>曝光补偿刻度</h3>
+          <h3>曝光补偿刻度 · 1/3 EV</h3>
           <div>
-            {Array.from(
-              { length: mode === 'full' ? 11 : 31 },
-              (_, i) => (i - (mode === 'full' ? 5 : 15)) * (mode === 'full' ? 1 : 1 / 3),
-            ).map((ev, i) => (
-              <span key={i}>{formatNumber(ev, mode === 'full' ? 0 : 2)}</span>
+            {Array.from({ length: 31 }, (_, i) => (i - 15) / 3).map((ev, i) => (
+              <span key={i}>{formatCompensation(ev)}</span>
             ))}
           </div>
-          <p>这是希望达到的亮度目标；必须通过光圈、快门或数码 ISO 的实际调整来实现。</p>
+          <p>补偿刻度固定为 1/3 EV，与参数档位模式分开；必须通过光圈、快门或数码 ISO 的实际调整来实现目标。</p>
         </div>
         <p className="micro">
           相邻标准档位的 EV 变化按索引计算。标称快门与 f 值经过取整，实际数值比值可能略有偏差。
@@ -1096,7 +1129,7 @@ export default function App() {
             <br />
             做出有意识的拍摄选择。
           </p>
-          <small>EXPOSURE LAB · V0.1</small>
+          <small>EXPOSURE LAB · V0.1.2</small>
         </div>
       </aside>
       <main className="content">

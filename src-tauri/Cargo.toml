@@ -1,6 +1,6 @@
 [package]
 name = "exposure-lab"
-version = "0.1.1"
+version = "0.1.2"
 description = "离线摄影曝光教学与计算"
 authors = ["wen9-lab"]
 repository = "https://github.com/wen9-lab/exposure-lab"

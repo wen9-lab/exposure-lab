@@ -115,3 +115,43 @@ describe('曝光计算', () => {
     expect(result.evaluation.residualEV).toBe(0)
   })
 })
+
+describe('三分之一 EV 补偿目标', () => {
+  it('固定参数时目标本身不改变进光量，只留下精确 1/3 EV 残差', () => {
+    const result = evaluate(base, base, 1 / 3, false, 'full')
+    expect(result.actualEV).toBe(0)
+    expect(result.lightEV).toBe(0)
+    expect(result.residualEV).toBeCloseTo(1 / 3, 10)
+    expect(result.status).toBe('different')
+  })
+
+  it('完整档参数不能精确满足 1/3 EV 时保留残差', () => {
+    const result = moveAndCompensate(
+      {
+        base,
+        current: base,
+        mode: 'full',
+        camera: 'digital',
+        targetEV: 1 / 3,
+        preferred: 'shutter',
+        locks: [],
+        ranges: {},
+      },
+      'iso',
+      200,
+    )
+    expect(result.evaluation.residualEV).toBeCloseTo(1 / 3, 10)
+    expect(result.evaluation.status).toBe('limited')
+    expect(result.reasons.some((reason) => reason.includes('无法完全补偿'))).toBe(true)
+  })
+
+  it('精细档 ISO 125 满足 1/3 档目标，同时保留标称数值差异', () => {
+    const setting = makeSetting(4, 1 / 500, 100, 'third')
+    const result = evaluate(setting, makeSetting(4, 1 / 500, 125, 'third'), 1 / 3, false, 'third')
+    expect(result.nominalEV).toBeCloseTo(1 / 3, 10)
+    expect(result.actualEV).toBeCloseTo(Math.log2(1.25), 10)
+    expect(result.residualEV).toBeCloseTo(0, 10)
+    expect(result.status).toBe('nominal')
+    expect(result.lightRatio).toBeCloseTo(1, 10)
+  })
+})

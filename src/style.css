@@ -1367,3 +1367,53 @@ td strong {
   outline: 2px solid var(--green);
   outline-offset: 3px;
 }
+
+.target-setting {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.target-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.target-setting output {
+  color: var(--green);
+  font-size: 0.88rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.target-controls {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.target-controls button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--panel2);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.target-controls button:hover:not(:disabled),
+.target-controls button:focus-visible {
+  border-color: var(--green);
+}
+.target-controls input {
+  min-width: 0;
+  margin: 0;
+}
+.target-help {
+  display: block;
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.55;
+}

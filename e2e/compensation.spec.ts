@@ -1,0 +1,88 @@
+import { test, expect } from '@playwright/test'
+
+test('完整档曝光目标按 1/3 EV 增加并保留未实现的差值', async ({ page }) => {
+  await page.goto('/')
+  const increase = page.getByRole('button', { name: '曝光目标增加 1/3 EV' })
+  const target = page.locator('.target-setting output')
+  const residual = page.locator('.result-line').filter({ hasText: '相对目标剩余偏差' })
+
+  await increase.click()
+  await expect(target).toContainText('+0.3 EV')
+  await expect(residual).toContainText('+0.33 EV')
+  await expect(page.getByRole('slider', { name: /曝光目标/ })).toHaveAttribute('aria-valuetext', '+0.3 EV')
+  await page.reload()
+  await expect(target).toContainText('+0.3 EV')
+  await expect(residual).toContainText('+0.33 EV')
+
+  await page.getByRole('button', { name: 'ISO后一档' }).click()
+  await expect(residual).toContainText('-0.67 EV')
+  await expect(page.locator('.result-status')).toContainText('非等效')
+
+  await increase.click()
+  await expect(target).toContainText('+0.7 EV')
+  await increase.click()
+  await expect(target).toContainText('+1 EV')
+  await page.reload()
+  await expect(target).toContainText('+1 EV')
+})
+
+test('精细档 1/3 EV 目标和 ISO 125 的档位计算一致', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /精细档计算器/ }).click()
+  await page.getByRole('button', { name: '曝光目标增加 1/3 EV' }).click()
+  await page.getByRole('button', { name: 'ISO后一档' }).click()
+  await expect(page.locator('.result-line').filter({ hasText: '标准档位差' })).toContainText('+0.33 EV')
+  await expect(page.locator('.result-line').filter({ hasText: '按数值计算的差异' })).toContainText('+0.322 EV')
+  await expect(page.locator('.result-line').filter({ hasText: '相对目标剩余偏差' })).toContainText('+0.00 EV')
+  await expect(page.locator('.result-status')).toContainText('档位等效')
+})
+
+test('速查页在完整档模式也显示三分之一 EV 曝光补偿刻度', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /档位速查表/ }).click()
+  const scale = page.locator('.comp-scale')
+  await expect(scale.locator('span')).toHaveCount(31)
+  await expect(scale.getByText('+0.3', { exact: true })).toBeVisible()
+  await expect(scale.getByText('+0.7', { exact: true })).toBeVisible()
+})
+
+test('手机宽度下补偿步进按钮有触控尺寸且页面不横向溢出', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/')
+  const increase = page.getByRole('button', { name: '曝光目标增加 1/3 EV' })
+  const box = await increase.boundingBox()
+  expect(box).not.toBeNull()
+  expect(box!.width).toBeGreaterThanOrEqual(40)
+  expect(box!.height).toBeGreaterThanOrEqual(40)
+  const widths = await page.evaluate(() => [document.documentElement.scrollWidth, window.innerWidth])
+  expect(widths[0]).toBeLessThanOrEqual(widths[1])
+})
+
+test('负向 1/3 EV 与上下限保持正确', async ({ page }) => {
+  await page.goto('/')
+  const decrease = page.getByRole('button', { name: '曝光目标减少 1/3 EV' })
+  const target = page.locator('.target-setting output')
+  const residual = page.locator('.result-line').filter({ hasText: '相对目标剩余偏差' })
+  await decrease.click()
+  await decrease.click()
+  await expect(target).toHaveText('-0.7 EV')
+  await expect(residual).toContainText('-0.67 EV')
+  const slider = page.getByRole('slider', { name: /曝光目标/ })
+  await slider.focus()
+  await slider.press('ArrowRight')
+  await expect(target).toHaveText('-0.3 EV')
+  await slider.fill('-15')
+  await expect(target).toHaveText('-5 EV')
+  await expect(decrease).toBeDisabled()
+  await slider.fill('15')
+  await expect(target).toHaveText('+5 EV')
+  await expect(page.getByRole('button', { name: '曝光目标增加 1/3 EV' })).toBeDisabled()
+})
+
+test('选择自动补偿参数后仅改目标不会误报已经尝试补偿', async ({ page }) => {
+  await page.goto('/')
+  await page.getByLabel('自动补偿参数').selectOption('shutter')
+  await page.getByRole('button', { name: '曝光目标增加 1/3 EV' }).click()
+  await expect(page.locator('.result-status')).toContainText('非等效')
+  await expect(page.locator('.result-line').filter({ hasText: '相对目标剩余偏差' })).toContainText('+0.33 EV')
+})
