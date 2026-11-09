@@ -151,7 +151,8 @@ export default function Knowledge() {
           <p>1/250 秒的时间是 1/500 秒的两倍，因此在其他条件不变时多一档光。更慢的快门也会记录更多手抖和主体位移。防抖可缓解相机抖动，却不能让移动中的人物停住。</p>
           <h3>ISO：数码亮度设置与胶卷标称值</h3>
           <p>数码 ISO 提高通常让相机给出更亮的影像，或允许在自动曝光中选更快快门；在光圈和快门固定时，它不会让传感器收到更多光。高 ISO 的噪声与高光余量影响因相机和处理而异。胶片 ISO 是胶卷的标称感光度，装入后不能像数码 ISO 那样逐张改变。</p>
-          <div className="knowledge-table-wrap"><table><caption>只改一个参数：以 f/4、1/500 秒、ISO 100 为基准</caption><thead><tr><th>改动</th><th>理论进光量</th><th>输出亮度趋势</th><th>常见画面影响</th></tr></thead><tbody>
+          <p className="knowledge-table-hint">在手机上，表格可左右滑动查看全部列；使用键盘时先聚焦表格再用方向键滚动。</p>
+          <div className="knowledge-table-wrap" tabIndex={0}><table><caption>只改一个参数：以 f/4、1/500 秒、ISO 100 为基准</caption><thead><tr><th>改动</th><th>理论进光量</th><th>输出亮度趋势</th><th>常见画面影响</th></tr></thead><tbody>
             <tr><td>f/4 → f/2.8</td><td>约 2 倍</td><td>约 +1 EV</td><td>景深趋浅</td></tr>
             <tr><td>1/500 → 1/250 秒</td><td>2 倍</td><td>+1 EV</td><td>运动模糊风险增加</td></tr>
             <tr><td>ISO 100 → 200</td><td>不变</td><td>+1 EV</td><td>噪声或高光余量可能改变</td></tr>
@@ -162,7 +163,7 @@ export default function Knowledge() {
 
         <Chapter id="chapter-stops" number="03" title="一档与 1/3 档的数学" summary="一档是倍数关系；1/3 档是把一次倍增分成三步。">
           <p>曝光多一档意味着理论光量变成 2 倍，少一档就是 1/2。1/3 档的倍率是 2 的三次方根，约 1.26；连续三次 1/3 档才约等于一整档。</p>
-          <div className="knowledge-table-wrap"><table><caption>同一场景、其他参数固定时</caption><thead><tr><th>参数</th><th>多一档光或亮度</th><th>少一档光或亮度</th></tr></thead><tbody>
+          <div className="knowledge-table-wrap" tabIndex={0}><table><caption>同一场景、其他参数固定时</caption><thead><tr><th>参数</th><th>多一档光或亮度</th><th>少一档光或亮度</th></tr></thead><tbody>
             <tr><td>光圈</td><td>f 值除以 √2，例如 f/4 → f/2.8</td><td>f 值乘以 √2，例如 f/4 → f/5.6</td></tr>
             <tr><td>快门</td><td>时间乘 2，例如 1/500 → 1/250 秒</td><td>时间除以 2，例如 1/500 → 1/1000 秒</td></tr>
             <tr><td>数码 ISO</td><td>数值乘 2，例如 100 → 200；仅亮度趋势</td><td>数值除以 2，例如 200 → 100；仅亮度趋势</td></tr>
@@ -181,18 +182,18 @@ export default function Knowledge() {
           <p>反射式测光读到的是主体反射回来的光。大面积雪景、深色背景、逆光人物会改变相机读数；现代相机的测光算法能处理不少场景，但并非每次都符合你想保留的主体。先决定要让脸、天空还是白雪呈现什么样，再按现场试拍和高光警告调整。</p>
           <p>相机自动曝光模式中的“曝光补偿”通常通过改变其自动选择的快门、光圈或自动 ISO 来实现；在全手动且 ISO 固定时，目标刻度本身不能改变光量。本软件把补偿当成目标，并展示自动交换的剩余 EV；锁定或设备范围阻止调整时，就不能宣称已经等效。</p>
           <details className="knowledge-advanced"><summary>进阶：雪景究竟要加多少补偿？</summary><p>没有通用的固定数字。若相机把大面积白色拍灰，可从小幅正向补偿试拍并检查直方图；若已有高光溢出，反而要减少曝光。测光模式、主体、光线与相机处理都会改变所需调整。</p></details>
-          <Exercise>锁定快门和 ISO，再设 +1 EV 目标；查看未达成的残差与受限提示。</Exercise>
+          <Exercise>先恢复基准并关闭自动补偿，锁定快门和 ISO，再设 +1 EV 目标；查看目标残差。之后解锁快门并手动放慢一档，比较残差是否归零。</Exercise>
         </Chapter>
 
         <Chapter id="chapter-equivalence" number="05" title="曝光等效与创作取舍" summary="等效是亮度关系，不是画面表达或画质完全相同。">
           <p>固定场景下，光圈多一档而快门少一档，理论进光量可互相抵消。把 ISO 纳入后，两组参数也可能在输出亮度模型中等效，却收到不同数量的光。先决定景深和运动，再选择能达到目标的其余参数。</p>
-          <div className="knowledge-table-wrap"><table><caption>以 f/4、1/500 秒、ISO 100 为教学基准</caption><thead><tr><th>组合</th><th>亮度关系</th><th>取舍</th></tr></thead><tbody>
+          <div className="knowledge-table-wrap" tabIndex={0}><table><caption>以 f/4、1/500 秒、ISO 100 为教学基准</caption><thead><tr><th>组合</th><th>亮度关系</th><th>取舍</th></tr></thead><tbody>
             <tr><td>f/4 · 1/500 · ISO 100</td><td>基准</td><td>参照点</td></tr>
             <tr><td>f/2.8 · 1/1000 · ISO 100</td><td>标准档位等效</td><td>景深趋浅，动作更易凝固</td></tr>
             <tr><td>f/5.6 · 1/250 · ISO 100</td><td>标准档位等效</td><td>景深趋深，运动模糊风险上升</td></tr>
             <tr><td>f/4 · 1/1000 · ISO 200</td><td>输出亮度趋势等效</td><td>实际进光量只有基准一半</td></tr>
           </tbody></table></div>
-          <p>“等效”也有边界：不同镜头的透光率、胶片倒易律失效、极短快门与闪光同步限制、机身档位范围、主体移动和画面后期都可能让实拍结果偏离这个简化模型。</p>
+          <p>“等效”也有边界：不同镜头的透光率、胶片倒易律失效、极短快门与闪光同步限制、机身档位范围、主体移动和画面后期都可能让实拍结果偏离这个简化模型。长时间曝光时，某些胶片所需的曝光增加量不再按时间线性增长，这叫倒易律失效，须查胶卷资料。使用闪光灯时，快门速度还可能受机身闪光同步速度限制，须查机身说明。</p>
           <div className="knowledge-example"><strong>怎么做决定？</strong><p>如果你拍跑步者，先选能凝固动作的快门，再看能否开大光圈或提高数码 ISO；如果你拍静物并想留更多景深，可以收小光圈，再用三脚架放慢快门。两种做法的目标不同。</p></div>
           <details className="knowledge-advanced"><summary>进阶：同样亮为什么噪声可能不同？</summary><p>例如最后一行让快门少收一档光，再用 ISO 提高一档来补偿输出趋势。相机收到的光子更少，暗部质量可能不同。具体结果仍取决于机身、场景和处理。</p></details>
           <Exercise>比较表中四组组合的“进光量”和“按 ISO 推算的亮度”两行。</Exercise>
@@ -200,7 +201,7 @@ export default function Knowledge() {
 
         <Chapter id="chapter-sunny-16" number="06" title="阳光 16 与天气扩展" summary="没有测光表时，用它建立可试拍的起点，而不是宣称已经得到准确曝光。">
           <p>直射晴天下，经验规则是光圈 f/16、快门时间约 1/ISO 秒。ISO 400 的理论组合为 f/16、1/400 秒；1/3 档列表可以直接选 1/400 秒，完整 1 档列表常取 1/500 秒，按时间比计算约 <strong>−0.32 EV</strong>。这种取整差异应在结果里说明。</p>
-          <div className="knowledge-table-wrap"><table><caption>天气扩展：快门仍先取约 1/ISO 秒，以下光圈只作经验起点</caption><thead><tr><th>环境</th><th>起点光圈</th><th>现场提醒</th></tr></thead><tbody>
+          <div className="knowledge-table-wrap" tabIndex={0}><table><caption>天气扩展：快门仍先取约 1/ISO 秒，以下光圈只作经验起点</caption><thead><tr><th>环境</th><th>起点光圈</th><th>现场提醒</th></tr></thead><tbody>
             <tr><td>直射晴天</td><td>f/16</td><td>检查主体是否真在直射光中</td></tr>
             <tr><td>薄云或轻度阴天</td><td>f/11</td><td>薄云厚度变化很快</td></tr>
             <tr><td>明亮阴天</td><td>f/8</td><td>天空亮不代表主体一样亮</td></tr>
@@ -222,7 +223,7 @@ export default function Knowledge() {
           <div className="knowledge-example"><strong>胶片操作案例</strong><p>胶卷 ISO 400、按 EI 800 测光，若按原建议是 f/8、1/250 秒，新的目标约少一档，可用 f/8、1/500 秒。负片可能需要相应的显影安排，但是否推片、推多少，应由胶卷、实验室和你的画面目标决定；软件不会替你假定显影结果。</p></div>
           <p>胶片换卷前，优先检查胶卷盒上的 ISO、相机测光 EI、所选快门和镜头实际可用光圈。设 EI 是主动选择不同曝光目标，拍摄记录和冲洗说明也要一致。</p>
           <details className="knowledge-advanced"><summary>进阶：数码 ISO 和胶片 EI 能直接比较吗？</summary><p>它们都用数字帮助决定曝光，但物理意义和后续处理不同。数码输出受增益与映射影响；胶片的曝光量取决于照射到乳剂上的光，显影方式再影响密度、反差和颗粒。不要用一个等效公式推断最终画质。</p></details>
-          <Exercise>切到胶片模式，设胶卷 ISO 400、测光 EI 800，观察目标变化后光圈/快门如何补偿。</Exercise>
+          <Exercise>切到胶片模式，设胶卷 ISO 400、测光 EI 800，先观察相对目标剩余偏差；关闭自动补偿，再手动把快门加快一档，检查残差是否归零。EI 改动本身不会自动拨动参数。</Exercise>
         </Chapter>
 
         <Chapter id="chapter-scenes" number="08" title="场景实战" summary="先定主体和画面意图，再选参数；以下数字均为教学假设或经验起点。">

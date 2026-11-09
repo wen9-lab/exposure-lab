@@ -1357,3 +1357,13 @@ td strong {
     flex-basis: 100%;
   }
 }
+
+.knowledge-table-hint {
+  color: var(--muted);
+  font-size: 0.78rem !important;
+  margin: 12px 0 0 !important;
+}
+.knowledge-table-wrap:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 3px;
+}

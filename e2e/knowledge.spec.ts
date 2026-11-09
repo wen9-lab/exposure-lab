@@ -32,3 +32,12 @@ test('knowledge course remains readable at phone width without page overflow', a
   expect(widths.content).toBeLessThanOrEqual(widths.viewport)
   await expect(page.locator('.knowledge-table-wrap').first()).toBeVisible()
 })
+
+test('film EI lesson gives a usable manual verification path', async ({ page }) => {
+  await page.goto('/')
+  await page.getByRole('button', { name: /曝光知识库/ }).click()
+  const instruction = page.locator('#chapter-film .knowledge-exercise')
+  await expect(instruction).toContainText('关闭自动补偿')
+  await expect(instruction).toContainText('手动')
+  await expect(page.locator('.knowledge-table-wrap').first()).toHaveAttribute('tabindex', '0')
+})
