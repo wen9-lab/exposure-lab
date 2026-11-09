@@ -14,6 +14,7 @@ jobs:
     timeout-minutes: 90
     env:
       APPLE_DEVELOPMENT_TEAM: '0000000000'
+      CODE_SIGNING_ALLOWED: 'NO'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,4 +37,4 @@ jobs:
       - name: Generate iOS project
         run: npm run tauri -- ios init --ci --skip-targets-install
       - name: Build unsigned iOS simulator app
-        run: npm run tauri -- ios build --target aarch64-sim --ci -- CODE_SIGNING_ALLOWED=NO
+        run: npm run tauri -- ios build --target aarch64-sim --ci
