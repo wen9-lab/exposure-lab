@@ -1,6 +1,6 @@
 # 摄影曝光实验室 / Exposure Lab
 
-完全离线的摄影曝光教学与计算工具。首版包含 Windows、Android 安装配置，以及供 Mac 和 iPhone 使用的可离线缓存网页。两个计算器共用纯 TypeScript 计算内核，设置、预设和历史留在当前设备。
+离线摄影曝光教学与计算工具。Windows、Mac、Android 使用 Tauri 安装版；iPhone 采用在本人 Mac 上由 Xcode 签名安装的原生个人测试版。两个计算器共用纯 TypeScript 计算内核，设置、预设和历史留在当前设备。
 
 ## Windows 0.1.2 补偿目标修正
 
@@ -8,7 +8,7 @@
 
 曝光目标只是希望达到的偏移，单独调整目标不会改变实际进光量或 ISO 推算的亮度。完整档计算器的光圈、快门与 ISO 仍只按整档调整，无法精确达到 1/3 EV 目标时会显示剩余偏差；速查表也显示完整的 1/3 EV 补偿刻度。
 
-此修正已制作并本机启动验证 Windows 0.1.2 安装包；Mac Apple Silicon 个人测试包见下文。公开网页与 Android APK 仍为 0.1.1，iPhone 网页适配和 Android 更新仍待后续完成。
+此修正已制作并本机启动验证 Windows 0.1.2 安装包；Mac Apple Silicon 个人测试包已生成，用户反馈适配正常。Android 0.1.2 APK 已构建并完成静态签名核验；真机验收待设备。iPhone 原生个人测试版见下文。
 
 ## 功能
 
@@ -48,12 +48,16 @@ Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装
 
 ## Mac 个人测试版（Apple Silicon）
 
-codex/mac-test 分支的 GitHub Actions 工作流生成 Apple Silicon 的 .dmg 和 .app ZIP。应用使用临时签名，没有 Apple 开发者证书或公证，供个人测试，不作为已公证的正式分发包。Windows 0.1.2 的功能代码随此分支构建；公开网页和 Android APK 不随此工作流更新。
+GitHub Actions 工作流生成 Apple Silicon 的 .dmg 和 .app ZIP。应用使用临时签名，没有 Apple 开发者证书或公证，供个人测试，不作为已公证的正式分发包。用户已反馈 Mac 适配正常；具体离线重启和预设验收仍需记录。
 
 从 https://github.com/wen9-lab/exposure-lab/actions/runs/42561692781 的 Artifacts 下载产物，或从本机 E:\ExposureLab\output\macos 复制到 Mac。优先打开 .dmg，将 Exposure Lab.app 拖入“应用程序”。首次启动若被 macOS 拦截，在确认下载来源后到“系统设置 > 隐私与安全性”选择“仍要打开”；不要关闭整个系统的应用安全检查。Apple 的操作说明：https://support.apple.com/en-us/102445
 
 安装后断网，完全退出并重新打开应用，检查两个计算器的 1/3 EV 曝光目标、知识库和预设留存，再测试 JSON 导出与导入。此项必须在用户自己的 M 系列 Mac 上通过，CI 构建成功不等于实机验收通过。
 
+
+## iPhone 原生个人测试版
+
+iPhone 使用 Tauri 原生应用，不以网页作为交付。请在自己的 M 系列 Mac 上安装完整 Xcode、Node、Rust、CocoaPods，用 Apple Account 在 Xcode 登录 Personal Team，再按 [iPhone 安装说明](docs/ios-personal-test.md) 生成工程、签名并装到自己的 iPhone。免费个人团队配置文件 7 天后到期，需要重新构建安装；不能将 Windows/Mac 的安装包直接复制到 iPhone 使用。GitHub 的无签名 iOS 模拟器构建仅验证编译，真机安装和离线测试仍待完成。
 ## Android 安装
 
 在已安装 Android SDK、JDK 与 Android Rust 目标的环境中：
@@ -77,9 +81,9 @@ codex/mac-test 分支的 GitHub Actions 工作流生成 Apple Silicon 的 .dmg �
 2. 打开五个页面，调整光圈、快门与 ISO，验证 A–F 示例结果。
 3. 保存预设、重启并确认仍在；导出 JSON 后重新导入。
 4. Windows 在缺少 WebView2 的目标环境测试离线安装；Android 在真机测试安装和断网重启。
-5. Mac/iPhone 网页需先通过 HTTPS 加载，待缓存完成后再进入飞行模式复测。浏览器清除数据后需重新联网加载。
+5. Mac 安装版与 iPhone 原生版需在对应真实设备断网重开；iPhone 需先在 Mac 上完成 Xcode 个人团队签名安装。
 
-本仓库的公开访问只提供程序代码与静态网页，不上传用户的预设、历史或设置。
+GitHub 默认分支保存程序源码、知识内容、测试和构建脚本；个人预设、历史、设置和 Apple 签名凭据不上传。原 GitHub Pages 网页保留为历史交付，现仅手动触发发布，不作为 iPhone 版本。
 
 ## 知识库课程（0.1.1）
 

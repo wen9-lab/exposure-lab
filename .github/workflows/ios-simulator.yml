@@ -1,0 +1,39 @@
+name: Verify native iOS simulator build
+
+on:
+  push:
+    branches: [codex/ios-personal]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ios-simulator:
+    runs-on: macos-15
+    timeout-minutes: 90
+    env:
+      APPLE_DEVELOPMENT_TEAM: '0000000000'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-ios-sim
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri -> target
+      - name: Prepare Xcode and CocoaPods
+        run: |
+          xcodebuild -version
+          if ! command -v pod >/dev/null 2>&1; then brew install cocoapods; fi
+          pod --version
+      - run: npm ci
+      - run: npm test
+      - name: Generate iOS project
+        run: npm run tauri -- ios init --ci --skip-targets-install
+      - name: Build unsigned iOS simulator app
+        run: npm run tauri -- ios build --target aarch64-sim --ci -- CODE_SIGNING_ALLOWED=NO

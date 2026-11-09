@@ -1,39 +1,32 @@
-# 交付状态（2026-11-09，Mac 个人测试版与 Windows 0.1.2）
+# 交付状态（2026-11-09）
 
-## Mac Apple Silicon 个人测试版
+## 当前版本与 GitHub
 
-- 独立分支 codex/mac-test 从 Windows 0.1.2 源码构建；GitHub Actions 运行 https://github.com/wen9-lab/exposure-lab/actions/runs/42561692781 成功，源码提交 fb2b213。计算单元测试 18/18，通过 Tauri app,dmg 构建、codesign 结构检查和 hdiutil 镜像检查。
-- 安装镜像 E:\ExposureLab\output\macos\ExposureLab_0.1.2_macos_arm64.dmg，3,049,674 字节，SHA-256 B75FC96E8AF5277E0D77D9C6B256BEC01E2A82CE4D6065532D6496A2B40FE368。
-- 应用压缩包 E:\ExposureLab\output\macos\ExposureLab_0.1.2_macos_arm64-app.zip，2,946,956 字节，SHA-256 4F01B095AA0988B190DD3ED9B0AD18EC5C272BE36BF2CE913E9741D4EB547DDD。ZIP 中的应用可执行文件权限为 100755。两个下载文件与 CI 的 SHA256SUMS.txt 一致。
-- 应用采用临时签名，没有 Apple 开发者证书或公证。Mac 首次打开可能需要在系统“隐私与安全性”中针对该应用选择“仍要打开”。不能把 CI 构建成功当作 Mac 真机验收。
-- 用户已确认 M 系列 Mac；仍待在 Mac 上安装、断网重开、检查计算、知识页、预设与 JSON 备份。公开 GitHub Pages 网页和 Android APK 仍为 0.1.1，本轮未更新。
+- 0.1.2 功能源码、八章知识库、测试和构建配置位于 E:\ExposureLab。公开仓库：https://github.com/wen9-lab/exposure-lab。GitHub 默认分支同步状态以本文件下次核对的远端提交为准。
+- 1/3 EV 曝光目标修正在两款计算器中使用精确三分之一档内部值，界面显示 0、±0.3、±0.7、±1 等近似读数；完整档计算器达不到目标时显示残差。Windows 0.1.2 已本机安装启动。
+- GitHub Pages 旧网页保留为独立历史交付，不再作为 iPhone 交付物；Pages 工作流改为手动触发，以免默认分支同步时自动发布未经要求的网页版更新。应用的个人设置、预设和历史不上传 GitHub。
 
-## Windows 0.1.2 交付
+## 已生成的安装产物
 
-- 两款计算器的曝光目标改为精确 1/3 EV 步进，界面显示 0、±0.3、±0.7、±1 等近似相机读数；完整档参数仍按整档调整，未达到目标时保留残差。档位速查显示 31 个 1/3 EV 补偿刻度。
-- 新增正负方向、上下限、键盘、重载保留、完整档残差与精细档 ISO 125 的测试。2026-11-09 计算单元测试 18/18、浏览器交互测试 14/14 通过。
-- Windows x64 NSIS 0.1.2 离线安装包：E:\ExposureLab\output\windows\Exposure Lab_0.1.2_x64-setup.exe，219,717,035 字节，SHA-256 C9A871C75826F3AF53C5243952A04A078E4DB4E1FB1F66E218E6015CA5736B58。配置包含离线 WebView2 安装组件。
-- 本机已安装到 E:\ExposureLab-App：安装器退出码 0，程序版本 0.1.2，启动窗口标题为“摄影曝光实验室”。本机烟雾测试未覆盖缺少 WebView2 的断网设备。
-- Windows 0.1.2 待用户试用确认。公开 GitHub Pages 网页和 Android APK 仍为 0.1.1；本轮未更新这两个平台；Mac 个人测试版状态见上文。
+- Windows x64 NSIS 0.1.2 离线安装包：E:\ExposureLab\output\windows\Exposure Lab_0.1.2_x64-setup.exe，SHA-256 C9A871C75826F3AF53C5243952A04A078E4DB4E1FB1F66E218E6015CA5736B58。包含 WebView2 离线组件。本机安装器退出码 0，E:\ExposureLab-App 程序版本 0.1.2，启动窗口标题为“摄影曝光实验室”。缺少 WebView2 的断网 Windows 真机未测试。
+- Mac Apple Silicon 0.1.2 个人测试版：GitHub Actions https://github.com/wen9-lab/exposure-lab/actions/runs/42561692781 成功；本机镜像 E:\ExposureLab\output\macos\ExposureLab_0.1.2_macos_arm64.dmg，SHA-256 B75FC96E8AF5277E0D77D9C6B256BEC01E2A82CE4D6065532D6496A2B40FE368；.app ZIP SHA-256 4F01B095AA0988B190DD3ED9B0AD18EC5C272BE36BF2CE913E9741D4EB547DDD。用户已反馈“mac目前适配没有问题”；断网重开、预设和 JSON 备份的具体结果尚未收到。
+- Android ARM64 0.1.2 调试签名 APK：E:\ExposureLab\output\android\ExposureLab_0.1.2_arm64-debug.apk，137,242,044 字节，SHA-256 B1C6A286FF31E2EE32EE0789D1B5E094B3E7EC4CBAE4784BDA325DC82D48CE2A。apksigner v2 验证通过；包名 io.github.wen9lab.exposurelab.debug，versionCode 1002、versionName 0.1.2、min API 24、target API 35、compile API 36，仅含 arm64-v8a 原生库。调试证书 SHA-256 D0EFDD...B79BB69A 与 0.1.1 一致，可按同包名同签名升级；真机升级仍待验证。
+- Android 构建工具、SDK、JDK、Gradle、Rust、NDK 和缓存均在 E:\ExposureLab-Toolchains。Windows 缺少符号链接权限时，脚本自动使用 Gradle 打包已编译原生库。
 
-## 0.1.1 历史交付
+## iPhone 原生个人测试版
 
-### 已生成与验证
+- 用户已明确改为原生应用，不再以离线网页作为 iPhone 交付。代码共用现有 Tauri 2 和计算内核。
+- iOS 工程仅能在 Mac 上由完整 Xcode 生成和编译。本仓库准备了 scripts/prepare-ios-mac.sh、docs/ios-personal-test.md 与 GitHub Actions 无签名模拟器构建工作流；模拟器构建结果与真机状态须单独记录。
+- 免费 Apple Account 的 Personal Team 可通过 Xcode 安装到本人的 iPhone；配置文件 7 天到期，需重新构建安装。不能把 Mac 的 DMG/APP 分发方式直接套用到 iPhone。物理 iPhone 的签名、安装、断网重开、预设与 JSON 备份尚未验证。
 
-- 源码位于 E:\ExposureLab，公开仓库为 https://github.com/wen9-lab/exposure-lab。五个页面、计算内核、阳光 16、胶片 EI、预设、历史和 JSON 备份均已实现。
-- 曝光知识库已改为八章循序课程，包含档位数学、测光与补偿、数码/胶片差异、六类场景案例、表格和可展开进阶说明；所有正文随应用打包，离线可读。
-- 公开 HTTPS 网页为 https://wen9-lab.github.io/exposure-lab/；2026-11-09 已确认网页引用新版脚本 index-CiUnsXwG.js。Windows Edge 上新版线上首次缓存、断网重开、知识库可读与本地状态保留测试通过。
-- Windows x64 NSIS 0.1.1 离线安装包：E:\ExposureLab\output\windows\Exposure Lab_0.1.1_x64-setup.exe，219,715,324 字节，SHA-256 90EAD92971CCD75255817699F17806997091C149B705E4D3AE833A5A5FEAD67B。构建配置包含离线 WebView2 安装程序。
-- Windows 0.1.1 曾在本机安装到 E:\ExposureLab-App：安装程序退出码 0；应用启动后窗口标题为“摄影曝光实验室”，产品版本为 0.1.1。现已由 0.1.2 覆盖；该烟雾测试不覆盖缺少 WebView2 的断网环境。
-- Android ARM64 调试签名 0.1.1 APK：E:\ExposureLab\output\android\ExposureLab_0.1.1_arm64-debug.apk，137,215,684 字节，SHA-256 A5FC16C69C3E201DDEC48B16B4796A3862479037CA1850F437C09F3B11B85D74。apksigner 验证通过 v2 签名；包名 io.github.wen9lab.exposurelab.debug，versionName 0.1.1，min API 24、target API 35、compile API 36，仅含 arm64-v8a 原生库。APK 中原生库哈希与本次 Rust 编译产物一致。
-- 当前账户没有创建 Windows 符号链接的权限；Android 构建脚本已在 Tauri 编译成功后自动切换到 Gradle 打包，并实测成功，无需更改系统设置。Android SDK、JDK、Gradle、Rust、NDK 和构建缓存均位于 E:\ExposureLab-Toolchains。
-- 0.1.1 自动测试：计算单元测试 15/15、浏览器交互 8/8、本地和线上网页离线测试各 1/1。桌面及 390 px 手机知识库截图已检查；手机页面无横向溢出，宽表格可在自身区域横向滚动。
-- 本任务产生的 C 盘 node_modules、旧安装包、临时截图和 Android SDK 缓存已清除；误装在 C 盘的 Microsoft OpenJDK 17 已通过正式卸载程序移除，ADB 密钥已校验后迁到 E 盘。C 盘重复源码副本已删除，后续编辑以 E 盘主工程为准。
+## 自动测试与待验收
 
-## 尚待确认与真实设备验收
+- Windows 0.1.2 改动时计算单元测试 18/18、浏览器交互测试 14/14 通过；本轮提交前会重新运行。
+- Windows：用户确认补偿控件与计算结果；在缺少 WebView2 的实际设备上断网安装、重启检查。
+- Android：用户当前无法连接手机；需真机安装、断网重开、计算与预设保留检查。
+- Mac：用户确认适配正常；需明确断网重开、预设和 JSON 备份的结果。
+- iPhone：需在用户的 Mac + iPhone 上用 Xcode Personal Team 签名安装，再做上述离线与数据验收。未在真实设备上通过的项目不计入完成验收。
 
-1. Windows 0.1.2：用户确认补偿控件与计算结果；在缺少 WebView2 的实际设备上断网安装，关闭并重启后检查计算、知识页和预设。
-2. Android：Windows 版确认后再更新；用户暂时不方便连接手机，真机安装、断网重启与预设保留待验证。
-3. Mac：Apple Silicon 个人测试版已生成，真机安装、断网重开、计算、知识页、预设与 JSON 备份待用户验收。iPhone 网页首次 HTTPS 缓存后的断网重开与本地数据保留仍待验证。
+## 0.1.1 历史
 
-网页首次加载需要网络和 HTTPS；浏览器清除网站数据后可能需重新联网。Android APK 是个人测试用调试签名包，长期分发与后续升级需要专用签名密钥。未完成的真实设备测试不计入已通过验收。旧版 Windows 0.1.0 安装包仍留在 output/windows，不能视为包含新版知识库。
+- 0.1.1 八章离线知识库、Windows 离线安装包、Android ARM64 调试 APK 和 GitHub Pages 网页已交付；历史细节保留在 Git 提交中。网页首次访问需要 HTTPS 与网络，浏览器清除网站数据后可能需要重新联网。用户已不将网页作为 iPhone 方案。
