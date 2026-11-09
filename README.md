@@ -57,7 +57,8 @@ GitHub Actions 工作流生成 Apple Silicon 的 .dmg 和 .app ZIP。应用使�
 
 ## iPhone 原生个人测试版
 
-iPhone 使用 Tauri 原生应用，不以网页作为交付。请在自己的 M 系列 Mac 上安装完整 Xcode、Node、Rust、CocoaPods，用 Apple Account 在 Xcode 登录 Personal Team，再按 [iPhone 安装说明](docs/ios-personal-test.md) 生成工程、签名并装到自己的 iPhone。免费个人团队配置文件 7 天后到期，需要重新构建安装；不能将 Windows/Mac 的安装包直接复制到 iPhone 使用。GitHub 的无签名 iOS 模拟器构建仅验证编译，真机安装和离线测试仍待完成。
+iPhone 使用 Tauri 原生应用，不以网页作为交付。请在自己的 M 系列 Mac 上安装完整 Xcode、Node、Rust、CocoaPods，用 Apple Account 在 Xcode 登录 Personal Team，再按 [iPhone 安装说明](docs/ios-personal-test.md) 生成工程、签名并装到自己的 iPhone。免费个人团队配置文件 7 天后到期，需要重新构建安装；不能将 Windows/Mac 的安装包直接复制到 iPhone 使用。GitHub 的[无签名 iOS 模拟器构建](https://github.com/wen9-lab/exposure-lab/actions/runs/42582418944)已通过，但它仅验证工程生成与编译；真机安装和离线测试仍待完成。
+
 ## Android 安装
 
 在已安装 Android SDK、JDK 与 Android Rust 目标的环境中：
