@@ -38,10 +38,10 @@
 - Consumes: 当前 0.1.2 源码、npm ci、npm test、Tauri 2。
 - Produces: GitHub Actions 中的 Apple Silicon .dmg 和 .app ZIP 及哈希记录。
 
-- [ ] Step 1: 检查现有 pages.yml 只监听 main、Tauri 当前 bundle.targets 为 nsis。
-- [ ] Step 2: 写 macOS 工作流；分支限定 codex/mac-test，选择 Apple Silicon runner，安装 Node 24 与 Rust stable，运行 npm ci 和 npm test。
-- [ ] Step 3: 用 APPLE_SIGNING_IDENTITY 为减号运行 Tauri app,dmg 构建，检验 codesign 与 hdiutil，使用 ditto 压缩 .app，生成 SHA-256，上传产物。
-- [ ] Step 4: 在 README 写明个人测试版安装步骤与 Gatekeeper 限制，在 DELIVERY_STATUS 记录当前状态与待实机验收。
+- [x] Step 1: 检查现有 pages.yml 只监听 main、Tauri 当前 bundle.targets 为 nsis。
+- [x] Step 2: 写 macOS 工作流；分支限定 codex/mac-test，选择 Apple Silicon runner，安装 Node 24 与 Rust stable，运行 npm ci 和 npm test。
+- [x] Step 3: 用 APPLE_SIGNING_IDENTITY 为减号运行 Tauri app,dmg 构建，检验 codesign 与 hdiutil，使用 ditto 压缩 .app，生成 SHA-256，上传产物。
+- [x] Step 4: 在 README 写明个人测试版安装步骤与 Gatekeeper 限制，在 DELIVERY_STATUS 记录当前状态与待实机验收。
 
 ### Task 2: 构建与验收交接
 
@@ -54,7 +54,7 @@
 - Consumes: Task 1 工作流。
 - Produces: 可下载的 Mac 安装包和可复查的验证记录。
 
-- [ ] Step 1: 本地检查 YAML、Git diff、npm test 和 npm run build。
-- [ ] Step 2: 提交并推送 codex/mac-test 分支；若认证阻止推送，记录实际阻碍并保留本地可复查的提交。
-- [ ] Step 3: 检查 Actions 运行结果、下载 .dmg 与 .app ZIP，验证哈希并记录产物链接。
+- [x] Step 1: 本地检查 YAML、Git diff、npm test 和 npm run build。
+- [x] Step 2: 提交并推送 codex/mac-test 分支；若认证阻止推送，记录实际阻碍并保留本地可复查的提交。
+- [x] Step 3: 检查 Actions 运行结果、下载 .dmg 与 .app ZIP，验证哈希并记录产物链接。
 - [ ] Step 4: 交给用户在 M 系列 Mac 试装、断网重开、检查计算和预设；未完成前不标为实机验收通过。

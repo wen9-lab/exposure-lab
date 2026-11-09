@@ -8,7 +8,7 @@
 
 曝光目标只是希望达到的偏移，单独调整目标不会改变实际进光量或 ISO 推算的亮度。完整档计算器的光圈、快门与 ISO 仍只按整档调整，无法精确达到 1/3 EV 目标时会显示剩余偏差；速查表也显示完整的 1/3 EV 补偿刻度。
 
-此修正当前仅制作和本机启动验证了 Windows 0.1.2 安装包。公开网页与 Android APK 仍为 0.1.1；Mac/iPhone 与 Android 的更新在 Windows 版确认后进行。
+此修正已制作并本机启动验证 Windows 0.1.2 安装包；Mac Apple Silicon 个人测试包见下文。公开网页与 Android APK 仍为 0.1.1，iPhone 网页适配和 Android 更新仍待后续完成。
 
 ## 功能
 
@@ -50,7 +50,7 @@ Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装
 
 codex/mac-test 分支的 GitHub Actions 工作流生成 Apple Silicon 的 .dmg 和 .app ZIP。应用使用临时签名，没有 Apple 开发者证书或公证，供个人测试，不作为已公证的正式分发包。Windows 0.1.2 的功能代码随此分支构建；公开网页和 Android APK 不随此工作流更新。
 
-从该分支的 Actions 运行记录下载产物，优先打开 .dmg，将 Exposure Lab.app 拖入“应用程序”。首次启动若被 macOS 拦截，在确认下载来源后到“系统设置 > 隐私与安全性”选择“仍要打开”；不要关闭整个系统的应用安全检查。Apple 的操作说明：https://support.apple.com/en-us/102445
+从 https://github.com/wen9-lab/exposure-lab/actions/runs/42561692781 的 Artifacts 下载产物，或从本机 E:\ExposureLab\output\macos 复制到 Mac。优先打开 .dmg，将 Exposure Lab.app 拖入“应用程序”。首次启动若被 macOS 拦截，在确认下载来源后到“系统设置 > 隐私与安全性”选择“仍要打开”；不要关闭整个系统的应用安全检查。Apple 的操作说明：https://support.apple.com/en-us/102445
 
 安装后断网，完全退出并重新打开应用，检查两个计算器的 1/3 EV 曝光目标、知识库和预设留存，再测试 JSON 导出与导入。此项必须在用户自己的 M 系列 Mac 上通过，CI 构建成功不等于实机验收通过。
 

@@ -1,12 +1,20 @@
-# 交付状态（2026-11-09，Windows 补偿修正 0.1.2）
+# 交付状态（2026-11-09，Mac 个人测试版与 Windows 0.1.2）
 
-## 当前 Windows 交付
+## Mac Apple Silicon 个人测试版
+
+- 独立分支 codex/mac-test 从 Windows 0.1.2 源码构建；GitHub Actions 运行 https://github.com/wen9-lab/exposure-lab/actions/runs/42561692781 成功，源码提交 fb2b213。计算单元测试 18/18，通过 Tauri app,dmg 构建、codesign 结构检查和 hdiutil 镜像检查。
+- 安装镜像 E:\ExposureLab\output\macos\ExposureLab_0.1.2_macos_arm64.dmg，3,049,674 字节，SHA-256 B75FC96E8AF5277E0D77D9C6B256BEC01E2A82CE4D6065532D6496A2B40FE368。
+- 应用压缩包 E:\ExposureLab\output\macos\ExposureLab_0.1.2_macos_arm64-app.zip，2,946,956 字节，SHA-256 4F01B095AA0988B190DD3ED9B0AD18EC5C272BE36BF2CE913E9741D4EB547DDD。ZIP 中的应用可执行文件权限为 100755。两个下载文件与 CI 的 SHA256SUMS.txt 一致。
+- 应用采用临时签名，没有 Apple 开发者证书或公证。Mac 首次打开可能需要在系统“隐私与安全性”中针对该应用选择“仍要打开”。不能把 CI 构建成功当作 Mac 真机验收。
+- 用户已确认 M 系列 Mac；仍待在 Mac 上安装、断网重开、检查计算、知识页、预设与 JSON 备份。公开 GitHub Pages 网页和 Android APK 仍为 0.1.1，本轮未更新。
+
+## Windows 0.1.2 交付
 
 - 两款计算器的曝光目标改为精确 1/3 EV 步进，界面显示 0、±0.3、±0.7、±1 等近似相机读数；完整档参数仍按整档调整，未达到目标时保留残差。档位速查显示 31 个 1/3 EV 补偿刻度。
 - 新增正负方向、上下限、键盘、重载保留、完整档残差与精细档 ISO 125 的测试。2026-11-09 计算单元测试 18/18、浏览器交互测试 14/14 通过。
 - Windows x64 NSIS 0.1.2 离线安装包：E:\ExposureLab\output\windows\Exposure Lab_0.1.2_x64-setup.exe，219,717,035 字节，SHA-256 C9A871C75826F3AF53C5243952A04A078E4DB4E1FB1F66E218E6015CA5736B58。配置包含离线 WebView2 安装组件。
 - 本机已安装到 E:\ExposureLab-App：安装器退出码 0，程序版本 0.1.2，启动窗口标题为“摄影曝光实验室”。本机烟雾测试未覆盖缺少 WebView2 的断网设备。
-- Windows 0.1.2 待用户试用确认。公开 GitHub Pages 网页和 Android APK 仍为 0.1.1；本轮未更新这两个平台，也未执行 Mac/iPhone 适配。
+- Windows 0.1.2 待用户试用确认。公开 GitHub Pages 网页和 Android APK 仍为 0.1.1；本轮未更新这两个平台；Mac 个人测试版状态见上文。
 
 ## 0.1.1 历史交付
 
@@ -26,6 +34,6 @@
 
 1. Windows 0.1.2：用户确认补偿控件与计算结果；在缺少 WebView2 的实际设备上断网安装，关闭并重启后检查计算、知识页和预设。
 2. Android：Windows 版确认后再更新；用户暂时不方便连接手机，真机安装、断网重启与预设保留待验证。
-3. Mac/iPhone：Windows 版确认后再适配；各自浏览器首次 HTTPS 缓存后的断网重开与本地数据保留待验证。
+3. Mac：Apple Silicon 个人测试版已生成，真机安装、断网重开、计算、知识页、预设与 JSON 备份待用户验收。iPhone 网页首次 HTTPS 缓存后的断网重开与本地数据保留仍待验证。
 
 网页首次加载需要网络和 HTTPS；浏览器清除网站数据后可能需重新联网。Android APK 是个人测试用调试签名包，长期分发与后续升级需要专用签名密钥。未完成的真实设备测试不计入已通过验收。旧版 Windows 0.1.0 安装包仍留在 output/windows，不能视为包含新版知识库。
