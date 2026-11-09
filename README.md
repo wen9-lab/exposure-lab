@@ -64,3 +64,9 @@ Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装
 5. Mac/iPhone 网页需先通过 HTTPS 加载，待缓存完成后再进入飞行模式复测。浏览器清除数据后需重新联网加载。
 
 本仓库的公开访问只提供程序代码与静态网页，不上传用户的预设、历史或设置。
+
+## 知识库课程（0.1.1）
+
+知识库现为八章离线课程：曝光模型；光圈、快门、ISO；档位数学；EV、测光与补偿；曝光等效；阳光 16；数码与胶片；六类场景实战。每章包含解释、算例和使用边界；进阶说明可展开，手机端表格在表格区域内横向滚动。
+
+教学数值基于本软件的简化模型和原需求书。阳光 16 与天气扩展均为经验起点；传统 EV 与本软件的相对亮度 ΔEV、物理进光量与按 ISO 推算的亮度趋势分别解释。进一步阅读可参考 [尼康的曝光基础教程](https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/a-basic-look-at-the-basics-of-exposure)、[尼康的雪景拍摄建议](https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/tips-for-shooting-in-cold-weather)及 [柯达的胶片参考指南](https://www.kodak.com/content/products-brochures/Film/kodak-essential-reference-guide-for-filmmakers.pdf)。这些在线资料仅用于内容校核，应用离线阅读不依赖它们。

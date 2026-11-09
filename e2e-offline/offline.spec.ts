@@ -9,4 +9,6 @@ test('网页完成首次缓存后可断网重开并保留计算状态', async ({
   await page.reload()
   await expect(page.getByRole('heading', { name: '完整 1 档计算器' })).toBeVisible()
   await expect(page.getByText('f/2.8', { exact: true }).first()).toBeVisible()
+  await page.getByRole('button', { name: /曝光知识库/ }).click()
+  await expect(page.getByRole('heading', { name: '场景实战' })).toBeVisible()
 })

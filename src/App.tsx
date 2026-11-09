@@ -13,6 +13,7 @@ import {
   type SunScene,
 } from './core/exposure'
 import { ladder } from './core/ladders'
+import Knowledge from './Knowledge'
 import {
   defaultData,
   loadData,
@@ -548,115 +549,6 @@ function Calculator({ mode, calc, data, update, savePreset, addHistory }: Calcul
             </div>
           </section>
         </aside>
-      </div>
-    </div>
-  )
-}
-
-const lessons = [
-  {
-    title: '阳光 16 法则',
-    tag: '户外起点',
-    text: '晴天直射阳光下，以 f/16、快门约 1/ISO 秒作为经验曝光起点。天气、地面反射和主体明暗会改变合适曝光。',
-    detail:
-      '例如 ISO 400 的理论快门是 1/400 秒。完整档位相机常选 1/500 秒，比理论值少约 0.32 档；1/3 档相机可直接选 1/400 秒。',
-  },
-  {
-    title: '光圈、快门、ISO',
-    tag: '三要素',
-    text: '光圈控制通光口径和景深趋势；快门控制曝光时间与运动凝固；ISO 是感光度设置或胶卷标称值。',
-    detail:
-      '数码相机提高 ISO 不会增加到达传感器的光量。胶片的 ISO 是胶卷属性，拍摄中不能像数码设置那样随意改变。',
-  },
-  {
-    title: '一档 Stop 的数学',
-    tag: '核心概念',
-    text: '曝光变化一档，表示模型中的光量乘以 2 或除以 2；光圈 f 值每完整档约乘以 √2。',
-    detail: '由 f/4 开到 f/2.8 约增加一档进光量；把 1/500 秒改为 1/1000 秒约减少一档，两者可抵消。',
-  },
-  {
-    title: 'EV 与曝光补偿',
-    tag: '目标与结果',
-    text: '本软件结果中的“亮度差 EV”表示相对基准的理论档位差。曝光补偿是希望达到的目标，不是独立的进光量按钮。',
-    detail: '全手动且 ISO 固定时，设定 +1 EV 目标后，还须实际改变光圈或快门，才能达到更亮的曝光。',
-  },
-  {
-    title: '曝光等效交换',
-    tag: '取舍',
-    text: '不同光圈与快门组合可以在标准档位上等效，同时改变景深与运动表现。',
-    detail:
-      'f/4、1/500 秒与 f/2.8、1/1000 秒在完整档位上等效；按标称 f 值直接计算仍有约 +0.029 EV 的差异。',
-  },
-  {
-    title: '进光量与输出亮度',
-    tag: '避免误解',
-    text: '理论像面曝光比例可用 t/N² 估算；将 ISO 纳入后，可推算数码亮度的相对趋势。',
-    detail:
-      '镜头 T 值、减光镜、光照变化、传感器与照片处理都会影响真实图像。因此这里展示理论关系，不预测最终照片的像素亮度。',
-  },
-  {
-    title: '数码与胶片',
-    tag: '介质差异',
-    text: '数码模式可调光圈、快门、ISO。胶片模式把胶卷 ISO 固定，曝光交换主要靠光圈与快门。',
-    detail:
-      'EI 是测光指数。胶卷 ISO 400 按 EI 800 测光，目标比按 ISO 400 测光少一档曝光，并不改变胶片物理感光度。',
-  },
-  {
-    title: '典型场景',
-    tag: '实用例子',
-    text: '晴天人像可先按阳光 16 建立基准，再开大光圈并加快快门；运动场景则优先确保快门速度。',
-    detail:
-      '阴影中的人像与雪地场景均需依据现场亮度和主体反射率调整。雪地 f/22 只是一种经验起点，不能当作通用测光结果。',
-  },
-]
-function Knowledge() {
-  return (
-    <div className="page">
-      <div className="page-head">
-        <div>
-          <span className="eyebrow">THE FIELD GUIDE / 03</span>
-          <h1>曝光知识库</h1>
-          <p>把公式变成拍摄时可以使用的判断。</p>
-        </div>
-        {chip('完全离线可读')}
-      </div>
-      <div className="hero-lesson">
-        <div>
-          <span className="eyebrow">START HERE</span>
-          <h2>
-            曝光等效，
-            <br />
-            画面表达不等同。
-          </h2>
-          <p>光圈开大一档、快门加快一档，亮度可以保持接近；景深变浅，运动却更容易凝固。</p>
-        </div>
-        <div className="hero-equation">
-          <span>EXPOSURE RELATION</span>
-          <strong>
-            t × ISO
-            <br />
-            ──────
-            <br />
-            N²
-          </strong>
-          <small>相对基准的理论亮度模型</small>
-        </div>
-      </div>
-      <div className="lesson-grid">
-        {lessons.map((item, i) => (
-          <details className="panel lesson" key={item.title} open={i === 0}>
-            <summary>
-              <span className="lesson-index">{String(i + 1).padStart(2, '0')}</span>
-              <span>
-                <small>{item.tag}</small>
-                <strong>{item.title}</strong>
-              </span>
-              <span className="lesson-toggle">＋</span>
-            </summary>
-            <p>{item.text}</p>
-            <div className="lesson-detail">{item.detail}</div>
-          </details>
-        ))}
       </div>
     </div>
   )
