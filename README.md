@@ -46,6 +46,14 @@ npm run test:live
 
 Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装包复制到 `output/windows/`；**只有执行上述命令并验证产物后才算已交付安装包**。此方式使没有 WebView2 的 Windows 设备也能离线安装，但安装包体积会增加。
 
+## Mac 个人测试版（Apple Silicon）
+
+codex/mac-test 分支的 GitHub Actions 工作流生成 Apple Silicon 的 .dmg 和 .app ZIP。应用使用临时签名，没有 Apple 开发者证书或公证，供个人测试，不作为已公证的正式分发包。Windows 0.1.2 的功能代码随此分支构建；公开网页和 Android APK 不随此工作流更新。
+
+从该分支的 Actions 运行记录下载产物，优先打开 .dmg，将 Exposure Lab.app 拖入“应用程序”。首次启动若被 macOS 拦截，在确认下载来源后到“系统设置 > 隐私与安全性”选择“仍要打开”；不要关闭整个系统的应用安全检查。Apple 的操作说明：https://support.apple.com/en-us/102445
+
+安装后断网，完全退出并重新打开应用，检查两个计算器的 1/3 EV 曝光目标、知识库和预设留存，再测试 JSON 导出与导入。此项必须在用户自己的 M 系列 Mac 上通过，CI 构建成功不等于实机验收通过。
+
 ## Android 安装
 
 在已安装 Android SDK、JDK 与 Android Rust 目标的环境中：
