@@ -47,7 +47,7 @@ Tauri 配置使用 NSIS 和 `offlineInstaller` WebView2 模式。脚本将安装
 ```
 
 脚本初始化 Android 工程并构建带调试签名的 ARM64 APK，复制到 `output/android/`。它适合个人测试；正式长期分发或升级应配置并保管专用签名密钥。Android 真机首次安装可能需在系统设置中允许从该来源安装应用。
-脚本默认从 E 盘读取 Android SDK，并把 Gradle、Rust 构建产物及 Android 用户目录放在 E 盘；应用使用 `compileSdk 36`、`targetSdk 35`、`minSdk 24`。Windows 若提示无法创建符号链接，请在管理员 PowerShell 中执行构建脚本，或按系统说明启用开发者模式。生成的调试版包名带 `.debug` 后缀。
+脚本默认从 E 盘读取 Android SDK，并把 Gradle、Rust 构建产物及 Android 用户目录放在 E 盘；应用使用 `compileSdk 36`、`targetSdk 35`、`minSdk 24`。若 Windows 账户没有创建符号链接的权限，构建脚本会在 Tauri 编译原生库后自动改用 Gradle 打包，无需改变系统设置。调试版包名带 `.debug` 后缀；版本化 APK 放在 output/android，便于与旧版区分。
 
 ## 计算口径与限制
 

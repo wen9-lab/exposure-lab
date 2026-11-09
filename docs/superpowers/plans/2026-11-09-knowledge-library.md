@@ -40,11 +40,11 @@
 - Produces: default Knowledge(): JSX.Element, imported by App.tsx.
 - Consumes: no calculator state; static local content only.
 
-- [ ] Step 1: Write failing Playwright test for eight chapter headings, chapter anchor navigation, key numeric and EI statements, and six scene cases.
-- [ ] Step 2: Run npm run test:e2e -- e2e/knowledge.spec.ts; expect missing chapter/anchor assertions.
-- [ ] Step 3: Implement Knowledge() and its local content with eight chapters, simple tables, six structured scenes, native details for advanced notes and section IDs.
-- [ ] Step 4: Run targeted Playwright test; expect pass.
-- [ ] Step 5: Commit source, test and design/plan docs.
+- [x] Step 1: Write failing Playwright test for eight chapter headings, chapter anchor navigation, key numeric and EI statements, and six scene cases.
+- [x] Step 2: Run npm run test:e2e -- e2e/knowledge.spec.ts; expect missing chapter/anchor assertions.
+- [x] Step 3: Implement Knowledge() and its local content with eight chapters, simple tables, six structured scenes, native details for advanced notes and section IDs.
+- [x] Step 4: Run targeted Playwright test; expect pass.
+- [x] Step 5: Commit source, test and design/plan docs.
 
 ### Task 2: Readable responsive styling and offline coverage
 
@@ -57,11 +57,11 @@
 - Consumes: section IDs and class names from Task 1.
 - Produces: single-column reading layout and table overflow containment.
 
-- [ ] Step 1: Add failing mobile assertion for document scrollWidth <= viewport and a local-offline assertion that chapter text remains visible.
-- [ ] Step 2: Run targeted Playwright tests; expect mobile width or content assertion failure.
-- [ ] Step 3: Add layout, type, table, illustration and touch styles; refine offline page test without network dependency.
-- [ ] Step 4: Run npm test, npm run test:e2e, npm run test:offline and npm run build:pages; expect all pass.
-- [ ] Step 5: Commit styles and tests.
+- [x] Step 1: Add failing mobile assertion for document scrollWidth <= viewport and a local-offline assertion that chapter text remains visible.
+- [x] Step 2: Run targeted Playwright tests; expect mobile width or content assertion failure.
+- [x] Step 3: Add layout, type, table, illustration and touch styles; refine offline page test without network dependency.
+- [x] Step 4: Run npm test, npm run test:e2e, npm run test:offline and npm run build:pages; expect all pass.
+- [x] Step 5: Commit styles and tests.
 
 ### Task 3: Publish and package revised content
 
@@ -73,8 +73,8 @@
 - Consumes: built and verified course from Tasks 1-2.
 - Produces: GitHub Pages deployment, refreshed signed test installers, hashes and accurate delivery record.
 
-- [ ] Step 1: Update README and delivery notes with knowledge edition and source reference notes.
-- [ ] Step 2: Commit, push public source and confirm GitHub Pages workflow/URL serves new chapter text.
-- [ ] Step 3: Run scripts/build-windows.ps1 and scripts/build-android.ps1 using E toolchains; verify file metadata and hashes.
-- [ ] Step 4: Run available local smoke checks and update DELIVERY_STATUS.md; leave unavailable physical-device tests marked pending.
-- [ ] Step 5: Commit/push final delivery record and verify clean state.
+- [x] Step 1: Update README and delivery notes with knowledge edition and source reference notes.
+- [x] Step 2: Commit, push public source and confirm GitHub Pages workflow/URL serves new chapter text.
+- [x] Step 3: Run scripts/build-windows.ps1 and scripts/build-android.ps1 using E toolchains; verify file metadata and hashes.
+- [x] Step 4: Run available local smoke checks and update DELIVERY_STATUS.md; leave unavailable physical-device tests marked pending.
+- [x] Step 5: Commit/push final delivery record and verify clean state.

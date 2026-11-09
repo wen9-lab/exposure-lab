@@ -41,9 +41,28 @@ if ($gradle -notmatch 'compileSdk\s*=\s*\d+' -or $gradle -notmatch 'targetSdk\s*
 $gradle = $gradle -replace 'compileSdk\s*=\s*\d+', 'compileSdk = 36'
 $gradle = $gradle -replace 'targetSdk\s*=\s*\d+', 'targetSdk = 35'
 Set-Content -LiteralPath $gradleFile -Value $gradle -NoNewline
-npm run tauri -- android build --apk --target aarch64 --debug
-if ($LASTEXITCODE -ne 0) { throw 'Android build failed' }
+$buildLog = Join-Path $env:TEMP 'exposure-lab-android-build.log'
+npm run tauri -- android build --apk --target aarch64 --debug 2>&1 | Tee-Object -FilePath $buildLog
+if ($LASTEXITCODE -ne 0) {
+  $failure = Get-Content -LiteralPath $buildLog -Raw
+  if ($failure -notmatch 'Creation symbolic link is not allowed') { throw 'Android build failed' }
+  Write-Warning 'Windows blocked the Tauri symlink. Packaging the newly compiled library with Gradle.'
+  $native = Join-Path $env:CARGO_TARGET_DIR 'aarch64-linux-android\debug\libexposure_lab_lib.so'
+  if (-not (Test-Path -LiteralPath $native)) { throw 'Compiled ARM64 library not found' }
+  $jni = 'src-tauri\gen\android\app\src\main\jniLibs\arm64-v8a\libexposure_lab_lib.so'
+  Copy-Item -LiteralPath $native -Destination $jni -Force
+  Push-Location 'src-tauri\gen\android'
+  try {
+    .\gradlew.bat :app:assembleUniversalDebug -PabiList=arm64-v8a -ParchList=arm64 -PtargetList=aarch64 -x :app:rustBuildUniversalDebug -x :app:rustBuildArm64Debug --no-daemon
+    if ($LASTEXITCODE -ne 0) { throw 'Gradle fallback failed' }
+  } finally { Pop-Location }
+}
 $destination = Join-Path (Get-Location) 'output\android'
 New-Item -ItemType Directory -Path $destination -Force | Out-Null
-Get-ChildItem 'src-tauri\gen\android\app\build\outputs\apk' -Filter '*.apk' -Recurse | Copy-Item -Destination $destination -Force
+$apk = Get-ChildItem 'src-tauri\gen\android\app\build\outputs\apk\universal\debug' -Filter '*.apk' | Select-Object -First 1
+if (-not $apk) { throw 'Android APK not found' }
+Copy-Item -LiteralPath $apk.FullName -Destination (Join-Path $destination 'app-universal-debug.apk') -Force
+$version = (Get-Content -LiteralPath 'src-tauri\tauri.conf.json' -Raw | ConvertFrom-Json).version
+$fileName = 'ExposureLab_' + $version + '_arm64-debug.apk'
+Copy-Item -LiteralPath $apk.FullName -Destination (Join-Path $destination $fileName) -Force
 Write-Host "Android APK: $destination"
